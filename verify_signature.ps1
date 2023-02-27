@@ -13,7 +13,7 @@ if (-not (Test-Path $signature_folder)) {
     throw "$signature_folder not found. Download it from https://downloads.zenid.cz/"
 }
 
-$cosign_url = "https://github.com/sigstore/cosign/releases/latest/download/cosign-windows-amd64.exe"
+$cosign_url = "https://github.com/sigstore/cosign/releases/download/v1.13.1/cosign-windows-amd64.exe"
 
 $working_folder = [System.IO.Path]::GetTempPath() + [System.IO.Path]::GetRandomFileName()
 
