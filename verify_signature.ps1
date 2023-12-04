@@ -13,7 +13,7 @@ if (-not (Test-Path $signature_folder)) {
     throw "$signature_folder not found. Download it from https://downloads.zenid.cz/"
 }
 
-$cosign_url = "https://github.com/sigstore/cosign/releases/download/v1.13.1/cosign-windows-amd64.exe"
+$cosign_url = "https://github.com/sigstore/cosign/releases/download/v2.2.1/cosign-windows-amd64.exe"
 
 $working_folder = [System.IO.Path]::GetTempPath() + [System.IO.Path]::GetRandomFileName()
 
@@ -96,7 +96,7 @@ try {
     # Set the COSIGN_EXPERIMENTAL env variable to enable the experimental features
     $env:COSIGN_EXPERIMENTAL = 1
           
-    & $cosign_path verify-blob $checksums_path --signature "$unzipped_signature_path/checksums.sig" --certificate "$unzipped_signature_path/checksums.pem" --certificate-github-workflow-repository "$repository" --certificate-github-workflow-name "$workflow_name" --certificate-github-workflow-ref "$workflow_ref"  *> $cosign_output
+    & $cosign_path verify-blob $checksums_path --signature "$unzipped_signature_path/checksums.sig" --certificate "$unzipped_signature_path/checksums.pem" --certificate-identity-regexp=https://github.com/ZenIDTeam/ZenID/ --certificate-oidc-issuer https://token.actions.githubusercontent.com --certificate-github-workflow-name "$workflow_name" --certificate-github-workflow-ref "$workflow_ref"  *> $cosign_output
     
     Get-Content $cosign_output -Tail 1 | ForEach-Object { 
         $color = "Red"
